@@ -1,5 +1,4 @@
 # Plan
-Oto profesjonalny plan projektu w języku angielskim, idealny do umieszczenia w dokumentacji projektu (np. w pliku README.md na GitHubie) lub jako krótki zarys technologiczny:
 Project Architecture & Implementation Plan
 1. Application Layer (App & Database)
 
