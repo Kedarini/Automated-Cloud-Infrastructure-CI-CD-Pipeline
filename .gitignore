@@ -1,1 +1,2 @@
 tasks-api/.env
+k8s/secrets.yaml
