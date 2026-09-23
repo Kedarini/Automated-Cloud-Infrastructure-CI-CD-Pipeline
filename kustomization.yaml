@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- k8s/frontend-deployment.yaml
+- k8s/fastapi-deployment.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: frontend-files
+    files:
+    - frontend/index.html
+    - frontend/default.conf
