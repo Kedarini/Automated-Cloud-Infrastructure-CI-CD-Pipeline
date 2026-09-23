@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastAPI App Panel</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 2rem; }
+        .container { max-width: 600px; margin: 0 auto; background: #1e293b; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        h1, h2 { color: #38bdf8; }
+        input, button { padding: 0.5rem; margin: 0.5rem 0; width: 100%; box-sizing: border-box; border-radius: 4px; border: 1px solid #334155; background: #0f172a; color: #fff; }
+        button { background: #38bdf8; color: #0f172a; font-weight: bold; cursor: pointer; border: none; }
+        button:hover { background: #0ea5e9; }
+        ul { list-style: none; padding: 0; }
+        li { background: #334155; margin: 0.5rem 0; padding: 0.75rem; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; }
+        .error { color: #f87171; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Panel aplikacji FastAPI</h1>
+        <p>Interfejs połączony z Twoim backendem w chmurze / lokalnie.</p>
+
+        <hr style="border: 0; border-top: 1px solid #334155; margin: 1.5rem 0;">
+
+        <h2>Dodaj nowy element</h2>
+        <form id="itemForm">
+            <input type="text" id="itemName" placeholder="Nazwa elementu..." required>
+            <button type="submit">Wyślij do API</button>
+        </form>
+        <p id="msg" class="error"></p>
+
+        <h2>Lista z bazy danych</h2>
+        <button onclick="fetchData()">Odśwież dane</button>
+        <ul id="itemList">
+            <!-- Tutaj JavaScript wstrzyknie dane z bazy -->
+            <li>Ładowanie danych...</li>
+        </ul>
+    </div>
+
+    <script>
+        // Adres Twojego API (lokalnie lub adres URL w chmurze AWS)
+        const API_URL = "http://localhost:8000"; 
+
+        // Funkcja pobierająca dane z backendu (np. GET /items/)
+        async function fetchData() {
+            const listEl = document.getElementById('itemList');
+            listEl.innerHTML = '<li>Pobieranie...</li>';
+            
+            try {
+                const response = await fetch(`${API_URL}/items/`); // Dostosuj ścieżkę do swojego endpointu w FastAPI
+                if (!response.ok) throw new Error("Błąd pobierania danych z serwera");
+                
+                const data = await response.json();
+                listEl.innerHTML = '';
+                
+                if (data.length === 0) {
+                    listEl.innerHTML = '<li>Brak elementów w bazie.</li>';
+                    return;
+                }
+
+                data.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item.name || JSON.stringify(item);
+                    listEl.appendChild(li);
+                });
+            } catch (error) {
+                listEl.innerHTML = `<li class="error">Nie udało się połączyć z API (${error.message}). Upewnij się, że FastAPI działa.</li>`;
+            }
+        }
+
+        // Obsługa formularza (wysyłanie danych metodą POST do FastAPI)
+        document.getElementById('itemForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('itemName').value;
+            const msgEl = document.getElementById('msg');
+            msgEl.textContent = '';
+
+            try {
+                const response = await fetch(`${API_URL}/items/`, { // Dostosuj ścieżkę do swojego endpointu POST
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: name }) // Pydantic dopasuje to do modelu
+                });
+
+                if (!response.ok) throw new Error("Błąd podczas zapisu");
+
+                document.getElementById('itemName').value = '';
+                fetchData(); // Odśwież listę po dodaniu
+            } catch (error) {
+                msgEl.textContent = "Błąd: Nie powiodło się wysłanie danych do backendu.";
+            }
+        });
+
+        // Pobierz dane przy starcie strony
+        fetchData();
+    </script>
+
+</body>
+</html>
