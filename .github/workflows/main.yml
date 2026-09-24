@@ -16,8 +16,5 @@ jobs:
 
             - name: Run Ruff checks
               uses: astral-sh/ruff-action@v4.1.0
-
-            - name: Format check / fix
-              run: |
-                  ruff check --fix .
-                  ruff format --check
+              with:
+                  args: "check --fix"
