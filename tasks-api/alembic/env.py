@@ -1,9 +1,10 @@
 import asyncio
 
+from sqlalchemy.ext.asyncio import create_async_engine
+
 from alembic import context
 from app.core.config import get_settings
 from app.core.database import Base
-from sqlalchemy.ext.asyncio import create_async_engine
 
 config = context.config
 settings = get_settings()
@@ -43,7 +44,6 @@ async def run_async_migrations() -> None:
 
 
 def run_migrations_online() -> None:
-    # Uruchamiamy migracje asynchronicznie przez asyncio.run()
     asyncio.run(run_async_migrations())
 
 
