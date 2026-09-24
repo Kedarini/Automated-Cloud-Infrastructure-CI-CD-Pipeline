@@ -1,9 +1,10 @@
-from app.api.deps import get_db
-from app.models.task import Task
-from app.schemas.task import TaskCreate, TaskRead, TaskUpdate
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.api.deps import get_db
+from app.models.task import Task
+from app.schemas.task import TaskCreate, TaskRead, TaskUpdate
 
 router = APIRouter()
 
