@@ -13,3 +13,8 @@ dependencies = [
     "pydantic-settings>=2.15.0",
     "sqlalchemy[asyncio]>=2.0.54",
 ]
+
+[tool.ruff]
+lint.ignore = [
+    "B008",
+]
