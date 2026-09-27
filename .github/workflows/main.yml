@@ -32,17 +32,19 @@ jobs:
             - name: Run Ruff checks
               uses: astral-sh/ruff-action@v4.1.0
               with:
-                  args: "check --fix"
+                  args: "check --fix tasks-api"
 
             - name: Run Ruff format check
               uses: astral-sh/ruff-action@v4.1.0
               with:
-                  args: "format --check"
+                  args: "format --check tasks-api"
 
             - name: Run Type Checking (Mypy)
               run: |
-                  uv run mypy tasks-api/
+                  uv run mypy src/
+              working-directory: tasks-api
 
             - name: Run Tests
               run: |
-                  uv run pytest --cov=tasks-api/ --cov-report=term-missing
+                  uv run pytest --cov=src --cov-report=term-missing
+              working-directory: tasks-api
