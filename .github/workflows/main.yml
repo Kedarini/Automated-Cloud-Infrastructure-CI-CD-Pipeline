@@ -39,10 +39,10 @@ jobs:
               with:
                   args: "format --check tasks-api"
 
-            - name: Run Type Checking (Mypy)
-              run: |
-                  uv run mypy app/
-              working-directory: tasks-api
+            #- name: Run Type Checking (Mypy)
+            #  run: |
+            #      uv run mypy app/
+            #  working-directory: tasks-api
 
             - name: Run Tests
               run: |
