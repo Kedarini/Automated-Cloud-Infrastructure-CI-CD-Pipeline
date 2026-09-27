@@ -41,7 +41,7 @@ jobs:
 
             - name: Run Type Checking (Mypy)
               run: |
-                  uv run mypy src/
+                  uv run mypy app/
               working-directory: tasks-api
 
             - name: Run Tests
