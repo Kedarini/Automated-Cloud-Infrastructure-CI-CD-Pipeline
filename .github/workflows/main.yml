@@ -27,6 +27,7 @@ jobs:
             - name: Install dependencies
               run: |
                   uv sync --all-extras --dev
+              working-directory: tasks-api
 
             - name: Run Ruff checks
               uses: astral-sh/ruff-action@v4.1.0
